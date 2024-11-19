@@ -16,6 +16,7 @@ public class Deck {
             }
         }
         cardsLeft = cards.size();
+        shuffle();
     }
 
     // Methods
@@ -40,8 +41,8 @@ public class Deck {
 
     // Shuffles deck
     public void shuffle() {
-        for (int i = cards.size() - 1; i >= 0; i--) {
-            int r = (int)(Math.random() * (i));
+        for (int i = cardsLeft - 1; i >= 0; i--) {
+            int r = (int)(Math.random() * i + 1);
             cards.add(r, cards.remove(i));
             cards.add(cards.remove(r + 1));
         }
