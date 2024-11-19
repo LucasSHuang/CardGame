@@ -15,5 +15,35 @@ public class Deck {
                 cards.add(new Card(rank[j], suit[i], value[j]));
             }
         }
+        cardsLeft = cards.size();
+    }
+
+    // Methods
+
+    // Checks to see if number of cards left in deck is 0
+    public boolean isEmpty() {
+        if (cardsLeft == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    // Deals a random card in the deck
+    public Card deal() {
+        // Checks to see if deck is empty and then decrements cardsLeft and returns card at index
+        if (isEmpty()) {
+            return null;
+        }
+        cardsLeft--;
+        return cards.get(cardsLeft);
+    }
+
+    // Shuffles deck
+    public void shuffle() {
+        for (int i = cards.size() - 1; i >= 0; i--) {
+            int r = (int)(Math.random() * (i));
+            cards.add(r, cards.remove(i));
+            cards.add(cards.remove(r + 1));
+        }
     }
 }
