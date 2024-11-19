@@ -44,7 +44,7 @@ public class Deck {
         for (int i = cardsLeft - 1; i >= 0; i--) {
             int r = (int)(Math.random() * i + 1);
             cards.add(r, cards.remove(i));
-            cards.add(cards.remove(r + 1));
+            cards.add(i ,cards.remove(r + 1));
         }
     }
 }
