@@ -47,11 +47,20 @@ public class Player {
         this.points += points;
     }
 
+    public void updatePoints(int index) {
+            if (hand.get(index).getRank().equals("A") && points + 11 <= 21) {
+                points += 11;
+            }
+            else {
+                points += hand.get(index).getValue();
+            }
+    }
+
     public void addCard(Card card) {
         hand.add(card);
     }
 
-    // String
+    // toString
     public String toString() {
         return this.name + " has " + this.points + " points\n" + this.name + "'s cards: " + hand;
     }
