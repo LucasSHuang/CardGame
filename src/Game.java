@@ -25,9 +25,11 @@ public class Game {
     public static void printInstructions() {
         System.out.println("Welcome to Blackjack!");
         System.out.println("In Blackjack, you play against the dealer");
-        System.out.println();
-        System.out.println();
-        System.out.println();
+        System.out.println("The goal is to get as close to 21 points as possible");
+        System.out.println("Number cards are worth their face value and face cards are worth 10 points");
+        System.out.println("An ace can be 1 or 11 points");
+        System.out.println("After you are dealt two cards, you can choose to hit (take another card) or to stop");
+        System.out.println("You win if you get more points than the dealer");
     }
 
     public void dealHand() {
