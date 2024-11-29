@@ -42,9 +42,13 @@ public class Deck {
     // Shuffles deck
     public void shuffle() {
         for (int i = cardsLeft - 1; i >= 0; i--) {
-            int r = (int)(Math.random() * i + 1);
-            cards.add(r, cards.remove(i));
-            cards.add(i ,cards.remove(r + 1));
+            // Gets random index
+            int r = (int)(Math.random() * (i + 1));
+            // Creates temporary card placeholder for original card
+            Card temp = cards.get(i);
+            // Swaps the index of the two cards
+            cards.set(i, cards.get(r));
+            cards.add(r ,temp);
         }
     }
 }
