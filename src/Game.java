@@ -37,20 +37,57 @@ public class Game {
             player.addCard(deck.deal());
             player.updatePoints(i);
             dealer.addCard(deck.deal());
-            dealer.updatePoints(i);
+            dealer.dealerUpdate(i);
         }
     }
 
     public void playerTurn() {
-        System.out.println(player);
+        Scanner scanner = new Scanner(System.in);
         System.out.println(dealer);
+        while (player.getPoints() < 21) {
+            System.out.println(player);
+            String response;
+            while (true) {
+                System.out.println("Do you want to hit or stay?");
+                response = scanner.nextLine();
+                if (response.equals("hit") || response.equals("stay")) {
+                    break;
+                }
+                else {
+                    System.out.println("Please type a valid response");
+                }
+            }
+            if (response.equals("hit")) {
+                player.addCard(deck.deal());
+                player.updatePoints(player.getHand().size() - 1);
+                if (player.getPoints() >= 21) {
+                    break;
+                }
+            }
+            else if (response.equals("stay")) {
+                break;
+            }
+
+        }
     }
 
+    public boolean checkBust(Player player) {
+        if (player.getPoints() > 21) {
+            return true;
+        }
+        return false;
+    }
 
 
     public void playGame() {
         dealHand();
         playerTurn();
+        if (checkBust(player)) {
+            System.out.println(player);
+            System.out.println("You busted! Better luck next time!");
+            return;
+        }
+
 
     }
 
