@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Player {
 
@@ -48,12 +49,25 @@ public class Player {
     }
 
     public void updatePoints(int index) {
-            if (hand.get(index).getRank().equals("A") && points + 11 <= 21) {
-                points += 11;
+        Scanner scanner = new Scanner(System.in);
+            if (hand.get(index).getRank().equals("A")) {
+                System.out.println("Do you want your ace to be 1 point or 11 points?");
+                points += scanner.nextInt();
+                scanner.nextLine();
             }
             else {
                 points += hand.get(index).getValue();
             }
+    }
+
+    public void dealerUpdate(int index) {
+        if (hand.get(index).getRank().equals("A") && points < 21) {
+            points += 11;
+        }
+        else {
+            points += 1;
+        }
+        points += hand.get(index).getValue();
     }
 
     public void addCard(Card card) {
