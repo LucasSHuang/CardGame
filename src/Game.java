@@ -78,6 +78,24 @@ public class Game {
         return false;
     }
 
+    public void dealerTurn() {
+        System.out.println(player);
+        System.out.println("Dealer's turn");
+        while (dealer.getPoints() < player.getPoints()) {
+            System.out.println(dealer);
+            dealer.addCard(deck.deal());
+            dealer.dealerUpdate(dealer.getHand().size() - 1);
+        }
+        System.out.println(dealer);
+    }
+
+    public boolean checkWin(Player dealer) {
+        if (dealer.getPoints() > 21) {
+            return true;
+        }
+        return false;
+    }
+
 
     public void playGame() {
         dealHand();
@@ -87,8 +105,13 @@ public class Game {
             System.out.println("You busted! Better luck next time!");
             return;
         }
-
-
+        dealerTurn();
+        if (checkWin(dealer)) {
+            System.out.println("Congratulations, you won!");
+        }
+        else {
+            System.out.println("Sorry, the dealer beat you. Better luck next time!");
+        }
     }
 
     public static void main(String[] args) {
