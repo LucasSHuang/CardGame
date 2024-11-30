@@ -61,7 +61,7 @@ public class Player {
     }
 
     public void dealerUpdate(int index) {
-        if (hand.get(index).getRank().equals("A") && points + 11 < 21) {
+        if (hand.get(index).getRank().equals("A") && points + 11 <= 21) {
             points += 11;
         }
         else {
