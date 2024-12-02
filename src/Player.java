@@ -48,24 +48,24 @@ public class Player {
         this.points += points;
     }
 
-    public void updatePoints(int index) {
+    public void updatePoints() {
         Scanner scanner = new Scanner(System.in);
-            if (hand.get(index).getRank().equals("A")) {
+            if (hand.get(hand.size() - 1).getRank().equals("A")) {
                 System.out.println("Do you want your ace to be 1 point or 11 points?");
                 points += scanner.nextInt();
                 scanner.nextLine();
             }
             else {
-                points += hand.get(index).getValue();
+                points += hand.get(hand.size() - 1).getValue();
             }
     }
 
-    public void dealerUpdate(int index) {
-        if (hand.get(index).getRank().equals("A") && points + 11 <= 21) {
+    public void dealerUpdate() {
+        if (hand.get(hand.size() - 1).getRank().equals("A") && points + 11 <= 21) {
             points += 11;
         }
         else {
-            points += hand.get(index).getValue();
+            points += hand.get(hand.size() - 1).getValue();
         }
     }
 
