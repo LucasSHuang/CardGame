@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Player {
@@ -48,27 +49,51 @@ public class Player {
         this.points += points;
     }
 
+    // Updates player points
     public void updatePoints() {
         Scanner scanner = new Scanner(System.in);
-            if (hand.get(hand.size() - 1).getRank().equals("A")) {
-                System.out.println("Do you want your ace to be 1 point or 11 points?");
-                points += scanner.nextInt();
-                scanner.nextLine();
+        // Asks the player what point amount they want their ace to be if they get one
+        if (hand.get(hand.size() - 1).getRank().equals("A")) {
+            // Checks to see if the input was valid
+            boolean validInput = false;
+            while (!validInput) {
+                // Uses try catch loop for a non integer and if loop for wrong integer value
+                try {
+                    System.out.println("Do you want your ace to be 1 point or 11 points?");
+                    int value = scanner.nextInt();
+                    if (value == 1 || value == 11) {
+                        points += value;
+                        scanner.nextLine();
+                        validInput = true;
+                    }
+                    else {
+                        System.out.println("Type 1 or 11");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Please type an integer");
+                    scanner.nextLine();
+                }
             }
-            else {
-                points += hand.get(hand.size() - 1).getValue();
-            }
-    }
-
-    public void dealerUpdate() {
-        if (hand.get(hand.size() - 1).getRank().equals("A") && points + 11 <= 21) {
-            points += 11;
         }
         else {
+            // Adds the amount of points the card value holds
             points += hand.get(hand.size() - 1).getValue();
         }
     }
 
+    // Updates dealer points
+    public void dealerUpdate() {
+        // Adds the best point value of ace for the dealer
+        if (hand.get(hand.size() - 1).getRank().equals("A") && points + 11 <= 21) {
+            points += 11;
+        }
+        else {
+            // Add the amount of points the card value holds
+            points += hand.get(hand.size() - 1).getValue();
+        }
+    }
+
+    // Adds a card to the hand
     public void addCard(Card card) {
         hand.add(card);
     }
