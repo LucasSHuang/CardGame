@@ -32,7 +32,7 @@ public class Game {
         System.out.println("The goal is to get as close to 21 points as possible");
         System.out.println("Number cards are worth their face value and face cards are worth 10 points");
         System.out.println("An ace can be 1 or 11 points");
-        System.out.println("After you are dealt two cards, you can choose to hit (take another card) or to stop");
+        System.out.println("After you are dealt two cards, you can choose to hit (take another card) or to stay");
         System.out.println("You win if you get more points than the dealer");
     }
 
@@ -104,6 +104,7 @@ public class Game {
         while (dealer.getPoints() < player.getPoints()) {
             System.out.println(dealer);
             // Updates dealer hand
+            System.out.println("Dealer hits");
             dealer.addCard(deck.deal());
             dealer.dealerUpdate();
         }
