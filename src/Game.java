@@ -8,22 +8,26 @@ public class Game {
     private Deck deck;
     private Player player;
     private Player dealer;
+    private GameViewer window;
 
     // Constructor
     public Game() {
+        // Creates front end
+        this.window = new GameViewer(this);
         // Gets user's name
         Scanner scanner = new Scanner(System.in);
         System.out.println("What is your name? ");
         String name = scanner.nextLine();
         // Creates the deck of cards
         String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-        String[] suits = {"Spades", "Clubs", "Hearts", "Diamonds"};
+        String[] suits = {"Spades", "Hearts", "Diamonds", "Clubs"};
         int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10};
         deck = new Deck(ranks, suits, values);
         deck.shuffle();
         // Creates the player and dealer
         player = new Player(name);
         dealer = new Player("Dealer");
+        window.repaint();
     }
 
     // Prints instructions
