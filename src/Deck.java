@@ -23,10 +23,7 @@ public class Deck {
 
     // Checks to see if number of cards left in deck is 0
     public boolean isEmpty() {
-        if (cardsLeft == 0) {
-            return true;
-        }
-        return false;
+        return cardsLeft == 0;
     }
 
     // Deals a random card in the deck
