@@ -1,3 +1,4 @@
+// Blackjack by Lucas Huang
 import java.util.ArrayList;
 import java.util.Scanner;
 
