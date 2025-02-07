@@ -16,7 +16,6 @@ public class Deck {
             }
         }
         cardsLeft = cards.size();
-        shuffle();
     }
 
     // Methods
