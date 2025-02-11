@@ -9,10 +9,12 @@ public class Game {
     private Player player;
     private Player dealer;
     private GameViewer window;
+    private int state;
 
     // Constructor
     public Game() {
         // Creates front end
+        state = 0;
         this.window = new GameViewer(this);
         // Gets user's name
         Scanner scanner = new Scanner(System.in);
@@ -27,7 +29,13 @@ public class Game {
         // Creates the player and dealer
         player = new Player(name);
         dealer = new Player("Dealer");
+        state++;
         window.repaint();
+    }
+
+    // Getter
+    public int getState() {
+        return state;
     }
 
     // Prints instructions
@@ -40,6 +48,7 @@ public class Game {
         System.out.println("After you are dealt two cards, you can choose to hit (take another card) or to stay");
         System.out.println("You win if you get more points than the dealer");
     }
+
 
     // Deals the hands of both the player and dealer
     public void dealHand() {
