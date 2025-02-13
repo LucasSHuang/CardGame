@@ -9,13 +9,13 @@ public class Deck {
     private int cardsLeft;
 
     // Constructor
-    public Deck(String[] rank, String[] suit, int[] value) {
+    public Deck(String[] rank, String[] suit, int[] value, GameViewer window) {
         cards = new ArrayList<Card>();
         // Adds all cards into ArrayList
         for (int i = 0; i < rank.length; i++) {
             for (int j = 0; j < suit.length; j++) {
                 Image card = new ImageIcon("Resources/" + Integer.toString((i + 1) * (j + 1)) + ".png").getImage();
-                cards.add(new Card(rank[i], suit[j], value[j]));
+                cards.add(new Card(rank[i], suit[j], value[i], card, window));
             }
         }
         cardsLeft = cards.size();
