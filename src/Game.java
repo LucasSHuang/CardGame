@@ -10,12 +10,15 @@ public class Game {
     private Player dealer;
     private GameViewer window;
     private int state;
+    private boolean gameWon;
 
     // Constructor
     public Game() {
         // Creates front end
         state = 0;
         this.window = new GameViewer(this);
+        // Sets the game won to false
+        gameWon = false;
         // Gets user's name
         Scanner scanner = new Scanner(System.in);
         System.out.println("What is your name? ");
@@ -24,7 +27,7 @@ public class Game {
         String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
         String[] suits = {"Spades", "Hearts", "Diamonds", "Clubs"};
         int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10};
-        deck = new Deck(ranks, suits, values);
+        deck = new Deck(ranks, suits, values, window);
         deck.shuffle();
         // Creates the player and dealer
         player = new Player(name);
@@ -36,6 +39,14 @@ public class Game {
     // Getter
     public int getState() {
         return state;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Player getDealer() {
+        return dealer;
     }
 
     // Prints instructions
@@ -55,6 +66,7 @@ public class Game {
         // Deals cards to the players
         for (int i = 0; i < 2; i++) {
             player.addCard(deck.deal());
+            window.repaint();
             player.updatePoints();
         }
         // Deals card to the dealer
@@ -87,6 +99,7 @@ public class Game {
             // Adds a card to player hand if they chose to hit and if hand went over 21 ends turn
             if (response.equals("hit")) {
                 player.addCard(deck.deal());
+                window.repaint();
                 player.updatePoints();
                 if (player.getPoints() >= 21) {
                     break;
@@ -128,9 +141,12 @@ public class Game {
     // Plays the game
     public void playGame() {
         dealHand();
+        window.repaint();
         playerTurn();
         // Checks if the player has busted and if so ends the game
         if (checkBust(player)) {
+            state = 3;
+            window.repaint();
             System.out.println(player);
             System.out.println("You busted! Better luck next time!");
             return;
@@ -138,9 +154,14 @@ public class Game {
         dealerTurn();
         // Checks if the dealer busted and plays a message for both outcomes
         if (checkBust(dealer)) {
+            gameWon = true;
+            state++;
+            window.repaint();
             System.out.println("Congratulations, " + player.getName() + ", the dealer busted and you won!");
         }
         else {
+            state++;
+            window.repaint();
             System.out.println("Sorry, the dealer beat you. Better luck next time!");
         }
     }

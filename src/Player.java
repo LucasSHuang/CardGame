@@ -98,6 +98,10 @@ public class Player {
         hand.add(card);
     }
 
+    public Card getLastCard() {
+        return hand.get(hand.size() - 1);
+    }
+
     // toString
     public String toString() {
         return this.name + " has " + this.points + " points\n" + this.name + "'s cards: " + hand;

@@ -14,6 +14,8 @@ public class Card {
         this.rank = rank;
         this.suit = suit;
         this.value = value;
+        this.card = card;
+        this.window = window;
     }
 
     // Getters and setters
