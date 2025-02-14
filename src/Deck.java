@@ -11,11 +11,15 @@ public class Deck {
     // Constructor
     public Deck(String[] rank, String[] suit, int[] value, GameViewer window) {
         cards = new ArrayList<Card>();
+        // Counter variable to iterate through each image
+        int counter = 1;
         // Adds all cards into ArrayList
         for (int i = 0; i < rank.length; i++) {
             for (int j = 0; j < suit.length; j++) {
-                Image card = new ImageIcon("Resources/" + Integer.toString((i + 1) * (j + 1)) + ".png").getImage();
+                // Gets each image for the card
+                Image card = new ImageIcon("Resources/" + counter + ".png").getImage();
                 cards.add(new Card(rank[i], suit[j], value[i], card, window));
+                counter++;
             }
         }
         cardsLeft = cards.size();
