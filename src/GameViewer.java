@@ -54,12 +54,14 @@ public class GameViewer extends JFrame {
         public void printPlayer(Graphics g) {
             g.setColor(Color.WHITE);
             int handSize = game.getPlayer().getHand().size();
+            // Makes it so that the cards are centered
+            int startingX = (WINDOW_WIDTH - (handSize * CARD_WIDTH)) / 2;
             for (int i = 0; i < handSize; i++) {
                 g.setFont(MAIN);
                 if (game.getPlayer().getLastCard().getRank().equals("A")) {
                     g.drawString("Do you want your ace to be 1 or 11 points?", 300, WINDOW_HEIGHT / 2);
                 }
-                game.getPlayer().getHand().get(i).draw(g, ((MIDDLE * 2) / handSize) + (CARD_WIDTH * i), WINDOW_HEIGHT - CARD_HEIGHT * 2);
+                game.getPlayer().getHand().get(i).draw(g, startingX + (CARD_WIDTH * i), WINDOW_HEIGHT - CARD_HEIGHT * 2);
             }
         }
 
