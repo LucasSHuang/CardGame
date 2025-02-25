@@ -8,6 +8,7 @@ public class Player {
     private ArrayList<Card> hand;
     private int points;
     private String name;
+    private boolean chosenAceVal;
 
     // Constructors
     public Player(ArrayList<Card> hand, String name) {
@@ -15,6 +16,7 @@ public class Player {
         this.hand = hand;
         this.points = 0;
         this.name = name;
+        chosenAceVal = false;
     }
 
     public Player(String name) {
@@ -44,6 +46,10 @@ public class Player {
         return points;
     }
 
+    public boolean isChosenAceVal() {
+        return chosenAceVal;
+    }
+
     // Adding points and adding cards
     public void addPoints(int points) {
         this.points += points;
@@ -56,12 +62,15 @@ public class Player {
         if (hand.get(hand.size() - 1).getRank().equals("A")) {
             // Checks to see if the input was valid
             boolean validInput = false;
+            // Resets that the player has chosen an ace value
+            chosenAceVal = false;
             while (!validInput) {
                 // Uses try catch loop for a non integer and if loop for wrong integer value
                 try {
                     System.out.println("Do you want your ace to be 1 point or 11 points?");
                     int value = scanner.nextInt();
                     if (value == 1 || value == 11) {
+                        chosenAceVal = true;
                         points += value;
                         scanner.nextLine();
                         validInput = true;

@@ -10,8 +10,10 @@ public class GameViewer extends JFrame {
         public static final int CARD_HEIGHT = 180;
         public static final int CARD_WIDTH = 116;
         public static final int MIDDLE = 650;
+        public static final int SCORE_X = 1200;
         private final Color BACKGROUND = new Color(52, 90,55);
         private final Font MAIN = new Font("PLAIN", Font.BOLD, 24);
+        private final Font LARGE = new Font("PLAIN", Font.BOLD, 48);
         private Game game;
         private Image back;
 
@@ -46,34 +48,71 @@ public class GameViewer extends JFrame {
             for (int i = 0; i < instructions.size(); i++) {
                 g.drawString(instructions.get(i), WINDOW_WIDTH / 5,  WINDOW_HEIGHT / 10 + 50 * (i + 1) + TITLE_BAR_HEIGHT);
             }
-            Font f1 = new Font("PLAIN", Font.BOLD, 48);
-            g.setFont(f1);
+            g.setFont(LARGE);
             g.drawString("What is your name?", WINDOW_WIDTH / 3, WINDOW_HEIGHT - 300);
         }
 
-        public void printPlayer(Graphics g) {
+        public String findPoints(Player player) {
+            return player.getName() + ": " + Integer.toString(player.getPoints());
+        }
+
+        public void printPoints(Graphics g) {
+            String playerScore = findPoints(game.getPlayer());
+            g.drawString(playerScore, SCORE_X, TITLE_BAR_HEIGHT + 50);
+            String dealerScore = findPoints(game.getDealer());
+            g.drawString(dealerScore, SCORE_X, TITLE_BAR_HEIGHT + 100);
+        }
+
+        public void printCards(Graphics g, Player player) {
             g.setColor(Color.WHITE);
-            int handSize = game.getPlayer().getHand().size();
-            // Makes it so that the cards are centered
+            g.setFont(MAIN);
+            int handSize = player.getHand().size();
             int startingX = (WINDOW_WIDTH - (handSize * CARD_WIDTH)) / 2;
-            for (int i = 0; i < handSize; i++) {
-                g.setFont(MAIN);
-                if (game.getPlayer().getLastCard().getRank().equals("A")) {
-                    g.drawString("Do you want your ace to be 1 or 11 points?", 300, WINDOW_HEIGHT / 2);
+            if (player.getName().equals(game.getPlayer().getName())) {
+                g.drawString("Do you want to hit or stay?", MIDDLE / 2, WINDOW_HEIGHT / 2);
+                if (player.getLastCard().getRank().equals("A") && !player.isChosenAceVal()) {
+                    g.drawString("Do you want your ace to be 1 or 11 points?", MIDDLE / 2, WINDOW_HEIGHT / 2);
                 }
-                game.getPlayer().getHand().get(i).draw(g, startingX + (CARD_WIDTH * i), WINDOW_HEIGHT - CARD_HEIGHT * 2);
+            }
+            for (int i = 0; i < handSize; i++) {
+                player.getHand().get(i).draw(g, startingX + (CARD_WIDTH * i), WINDOW_HEIGHT - CARD_HEIGHT * 2);
             }
         }
 
+        public void printPlayer(Graphics g) {
+            printCards(g, game.getPlayer());
+        }
+
+        // Prints out the dealers cards
         public void printDealer(Graphics g, int state) {
             if (state == 1) {
-                printPlayer(g);
-                g.drawImage(back, MIDDLE, 50 + TITLE_BAR_HEIGHT, CARD_WIDTH, CARD_HEIGHT, this);
+                // Check if hand is empty then draw first card face up
+                // Draw second card face down
+                g.drawImage(back, MIDDLE + CARD_WIDTH, 50 + TITLE_BAR_HEIGHT, CARD_WIDTH, CARD_HEIGHT, this);
                 if (!game.getDealer().getHand().isEmpty()) {
-                    game.getDealer().getHand().get(0).draw(g, MIDDLE + CARD_WIDTH, 50 + TITLE_BAR_HEIGHT);
+                    game.getDealer().getHand().get(0).draw(g, MIDDLE, 50 + TITLE_BAR_HEIGHT);
                 }
             }
+            else {
+                // If dealer's turn just print out all cards
+                printCards(g, game.getDealer());
+            }
         }
+
+        public void printEnd(Graphics g) {
+            g.setColor(Color.WHITE);
+            g.setFont(LARGE);
+            if (game.isPlayerBusted()) {
+                g.drawString("You busted! Better luck next time!", WINDOW_WIDTH / 4, WINDOW_HEIGHT / 2);
+            }
+            else if (game.isGameWon()) {
+                g.drawString("Congratulations, " + game.getPlayer().getName() + ", the dealer busted and you won!", WINDOW_WIDTH / 4, WINDOW_HEIGHT / 2);
+            }
+            else {
+                g.drawString("Sorry, the dealer beat you. Better luck next time!", WINDOW_WIDTH / 9, WINDOW_HEIGHT / 2);
+            }
+        }
+
         // Paint method
         public void paint(Graphics g)
         {
@@ -81,15 +120,13 @@ public class GameViewer extends JFrame {
             if (game.getState() == 0) {
                 printInstructions(g);
             }
-            else if (game.getState() == 1) {
+            else if (game.getState() == 1 || game.getState() == 2) {
+                printDealer(g, game.getState());
                 printPlayer(g);
-                g.drawImage(back, MIDDLE, 50 + TITLE_BAR_HEIGHT, CARD_WIDTH, CARD_HEIGHT, this);
-                if (!game.getDealer().getHand().isEmpty()) {
-                    game.getDealer().getHand().get(0).draw(g, MIDDLE + CARD_WIDTH, 50 + TITLE_BAR_HEIGHT);
-
-                }
+                printPoints(g);
             }
-
-
+            else {
+                printEnd(g);
+            }
         }
     }

@@ -11,6 +11,7 @@ public class Game {
     private GameViewer window;
     private int state;
     private boolean gameWon;
+    private boolean playerBusted;
 
     // Constructor
     public Game() {
@@ -19,6 +20,7 @@ public class Game {
         this.window = new GameViewer(this);
         // Sets the game won to false
         gameWon = false;
+        playerBusted = false;
         // Gets user's name
         Scanner scanner = new Scanner(System.in);
         System.out.println("What is your name? ");
@@ -47,6 +49,14 @@ public class Game {
 
     public Player getDealer() {
         return dealer;
+    }
+
+    public boolean isGameWon() {
+        return gameWon;
+    }
+
+    public boolean isPlayerBusted() {
+        return playerBusted;
     }
 
     // Prints instructions
@@ -80,6 +90,7 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         // Prints out dealer hand for user
         System.out.println(dealer);
+        window.repaint();
         // Makes it so that while player has not busted they have option to hit or stay
         while (player.getPoints() < 21) {
             // Prints out player hand
@@ -123,6 +134,7 @@ public class Game {
 
     // Does the dealers turn
     public void dealerTurn() {
+        state++;
         // Shows final hand of player
         System.out.println(player);
         System.out.println("Dealer's turn");
@@ -131,9 +143,12 @@ public class Game {
         while (dealer.getPoints() < player.getPoints()) {
             System.out.println(dealer);
             // Updates dealer hand
+            System.out.println("Press enter for the dealer to hit");
+
             System.out.println("Dealer hits");
             dealer.addCard(deck.deal());
             dealer.dealerUpdate();
+            window.repaint();
         }
         System.out.println(dealer);
     }
@@ -146,9 +161,10 @@ public class Game {
         // Checks if the player has busted and if so ends the game
         if (checkBust(player)) {
             state = 3;
-            window.repaint();
+            playerBusted = true;
             System.out.println(player);
             System.out.println("You busted! Better luck next time!");
+            window.repaint();
             return;
         }
         dealerTurn();
