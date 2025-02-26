@@ -73,15 +73,15 @@ public class Game {
 
     // Deals the hands of both the player and dealer
     public void dealHand() {
+        // Deals card to the dealer
+        dealer.addCard(deck.deal());
+        dealer.dealerUpdate();
         // Deals cards to the players
         for (int i = 0; i < 2; i++) {
             player.addCard(deck.deal());
             window.repaint();
             player.updatePoints();
         }
-        // Deals card to the dealer
-        dealer.addCard(deck.deal());
-        dealer.dealerUpdate();
     }
 
     // Does the player's turn
@@ -90,7 +90,6 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         // Prints out dealer hand for user
         System.out.println(dealer);
-        window.repaint();
         // Makes it so that while player has not busted they have option to hit or stay
         while (player.getPoints() < 21) {
             // Prints out player hand
@@ -98,9 +97,9 @@ public class Game {
             String response;
             // Makes it so that the user has to put in a valid response
             while (true) {
-                System.out.println("Do you want to hit or stay?");
+                System.out.println("Do you want to hit or stand?");
                 response = scanner.nextLine();
-                if (response.equals("hit") || response.equals("stay")) {
+                if (response.equals("hit") || response.equals("stand")) {
                     break;
                 }
                 else {
@@ -134,6 +133,7 @@ public class Game {
 
     // Does the dealers turn
     public void dealerTurn() {
+        Scanner scanner = new Scanner(System.in);
         state++;
         // Shows final hand of player
         System.out.println(player);
@@ -143,8 +143,11 @@ public class Game {
         while (dealer.getPoints() < player.getPoints()) {
             System.out.println(dealer);
             // Updates dealer hand
-            System.out.println("Press enter for the dealer to hit");
-
+            System.out.println("Press space and enter for the dealer to hit");
+            String check = "";
+            while (!check.equals(" ")) {
+                check = scanner.nextLine();
+            }
             System.out.println("Dealer hits");
             dealer.addCard(deck.deal());
             dealer.dealerUpdate();
