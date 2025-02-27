@@ -91,19 +91,21 @@ public class GameViewer extends JFrame {
 
         // Prints out the dealers cards
         public void printDealer(Graphics g) {
-            // If its player's turn only shows one card and other is backwards
-            if (game.getState() == 1) {
-                // Check if hand is empty then draw first card face up
-                // Draw second card face down
+            g.setColor(Color.WHITE);
+            g.setFont(MAIN);
+            int handSize = game.getDealer().getHand().size();
+            int startingX = (WINDOW_WIDTH - (handSize * CARD_WIDTH)) / 2;
+            // If the dealer has only one card make it so that the second card is face down
+            if (handSize == 1) {
                 g.drawImage(back, MIDDLE + CARD_WIDTH, 50 + TITLE_BAR_HEIGHT, CARD_WIDTH, CARD_HEIGHT, this);
                 game.getDealer().getHand().get(0).draw(g, MIDDLE, 50 + TITLE_BAR_HEIGHT);
+                // If it is the dealer's turn plays the message
+                if (game.getState() == 2) {
+                    g.drawString("Press space and enter for the dealer to hit", MIDDLE - 100, WINDOW_HEIGHT / 2);
+                }
             }
             else {
-                g.setColor(Color.WHITE);
-                g.setFont(MAIN);
-                int handSize = game.getDealer().getHand().size();
-                int startingX = (WINDOW_WIDTH - (handSize * CARD_WIDTH)) / 2;
-                // If dealer's turn just print out all cards
+                // If dealer has more than one card just print out all cards
                 g.drawString("Press space and enter for the dealer to hit", MIDDLE - 100, WINDOW_HEIGHT / 2);
                 for (int i = 0; i < handSize; i++) {
                     game.getDealer().getHand().get(i).draw(g, startingX + (CARD_WIDTH * i), 50 + TITLE_BAR_HEIGHT);
