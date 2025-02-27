@@ -3,6 +3,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class GameViewer extends JFrame {
+
         // Instance variables and constants
         private final int WINDOW_WIDTH = 1500;
         private final int WINDOW_HEIGHT = 1000;
@@ -52,10 +53,12 @@ public class GameViewer extends JFrame {
             g.drawString("What is your name?", WINDOW_WIDTH / 3, WINDOW_HEIGHT - 300);
         }
 
+        // Gets the dealer's and players points
         public String findPoints(Player player) {
             return player.getName() + ": " + Integer.toString(player.getPoints());
         }
 
+        // Prints the points of both the dealer and player
         public void printPoints(Graphics g) {
             String playerScore = findPoints(game.getPlayer());
             g.drawString(playerScore, SCORE_X, TITLE_BAR_HEIGHT + 50);
@@ -63,34 +66,37 @@ public class GameViewer extends JFrame {
             g.drawString(dealerScore, SCORE_X, TITLE_BAR_HEIGHT + 100);
         }
 
+        // Prints the player's cards
         public void printPlayer(Graphics g) {
             g.setColor(Color.WHITE);
             g.setFont(MAIN);
             int handSize = game.getPlayer().getHand().size();
+            // Creates a variable that holds the leftmost card's x coord so everything is centered
             int startingX = (WINDOW_WIDTH - (handSize * CARD_WIDTH)) / 2;
             if (game.getState() == 1) {
+                // Checks for an ace
                 if (game.getPlayer().getLastCard().getRank().equals("A") && !game.getPlayer().isChosenAceVal()) {
                     g.drawString("Do you want your ace to be 1 or 11 points?", MIDDLE - 100, WINDOW_HEIGHT / 2);
                 }
                 else {
-                    g.drawString("Do you want to hit or stand?", MIDDLE, WINDOW_HEIGHT / 2);
+                    g.drawString("Do you want to hit or stand?", MIDDLE - 100, WINDOW_HEIGHT / 2);
 
                 }
             }
+            // Prints out player's cards
             for (int i = 0; i < handSize; i++) {
                 game.getPlayer().getHand().get(i).draw(g, startingX + (CARD_WIDTH * i), WINDOW_HEIGHT - CARD_HEIGHT * 2);
             }
         }
 
         // Prints out the dealers cards
-        public void printDealer(Graphics g, int state) {
-            if (state == 1) {
+        public void printDealer(Graphics g) {
+            // If its player's turn only shows one card and other is backwards
+            if (game.getState() == 1) {
                 // Check if hand is empty then draw first card face up
                 // Draw second card face down
                 g.drawImage(back, MIDDLE + CARD_WIDTH, 50 + TITLE_BAR_HEIGHT, CARD_WIDTH, CARD_HEIGHT, this);
-                if (!game.getDealer().getHand().isEmpty()) {
-                    game.getDealer().getHand().get(0).draw(g, MIDDLE, 50 + TITLE_BAR_HEIGHT);
-                }
+                game.getDealer().getHand().get(0).draw(g, MIDDLE, 50 + TITLE_BAR_HEIGHT);
             }
             else {
                 g.setColor(Color.WHITE);
@@ -105,15 +111,19 @@ public class GameViewer extends JFrame {
             }
         }
 
+        // Ending scene
         public void printEnd(Graphics g) {
             g.setColor(Color.WHITE);
             g.setFont(LARGE);
+            // If player busted print out certain message
             if (game.isPlayerBusted()) {
                 g.drawString("You busted! Better luck next time!", WINDOW_WIDTH / 4, WINDOW_HEIGHT / 2);
             }
+            // If player has won game print out winning message
             else if (game.isGameWon()) {
                 g.drawString("Congratulations, " + game.getPlayer().getName() + ", the dealer busted and you won!", 50, WINDOW_HEIGHT / 2);
             }
+            // Else just print the message that the dealer beat the player
             else {
                 g.drawString("Sorry, the dealer beat you. Better luck next time!", WINDOW_WIDTH / 9, WINDOW_HEIGHT / 2);
             }
@@ -122,15 +132,19 @@ public class GameViewer extends JFrame {
         // Paint method
         public void paint(Graphics g)
         {
+            // Always clears everything with a repaint of the background
             paintBackground(g);
+            // Starts with printing instructions
             if (game.getState() == 0) {
                 printInstructions(g);
             }
+            // Same order for player and dealer turn but state is just different
             else if (game.getState() == 1 || game.getState() == 2) {
-                printDealer(g, game.getState());
+                printDealer(g);
                 printPlayer(g);
                 printPoints(g);
             }
+            // Prints the end of the game
             else {
                 printEnd(g);
             }

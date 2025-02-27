@@ -133,8 +133,8 @@ public class Game {
 
     // Does the dealers turn
     public void dealerTurn() {
+        window.repaint();
         Scanner scanner = new Scanner(System.in);
-        state++;
         // Shows final hand of player
         System.out.println(player);
         System.out.println("Dealer's turn");
@@ -142,12 +142,13 @@ public class Game {
         // Once the dealer has more points or ties the player the turn ends
         while (dealer.getPoints() < player.getPoints()) {
             System.out.println(dealer);
-            // Updates dealer hand
+            // Gets player input so player can see dealer's cards in front end
             System.out.println("Press space and enter for the dealer to hit");
             String check = "";
             while (!check.equals(" ")) {
                 check = scanner.nextLine();
             }
+            // Updates dealer hand
             System.out.println("Dealer hits");
             dealer.addCard(deck.deal());
             dealer.dealerUpdate();
@@ -170,6 +171,7 @@ public class Game {
             window.repaint();
             return;
         }
+        state++;
         dealerTurn();
         // Checks if the dealer busted and plays a message for both outcomes
         if (checkBust(dealer)) {
